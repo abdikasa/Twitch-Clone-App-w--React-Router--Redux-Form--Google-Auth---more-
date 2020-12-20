@@ -1,4 +1,3 @@
-import { SIGN_IN, SIGN_OUT } from "../actions/type";
 const INITIAL = null;
 
 export default (state = INITIAL, action) => {

@@ -4,14 +4,23 @@ import { signIn, signOut, fetchStatus } from "./actions";
 
 class GoogleAuth extends Component {
   componentDidMount() {
-    this.props.fetchStatus();
+    this.props.fetchStatus(this.onAuthChange);
   }
 
+  onAuthChange = (isSignedIn) => {
+    console.log(this.props.current.currentUser.get().getId());
+    if (isSignedIn) {
+      this.props.signIn(this.props.current.currentUser.get().getId());
+    } else {
+      this.props.signOut();
+    }
+  };
+
   renderAuthButton = () => {
-    if (this.props.currentStatus.isSignedIn === null) {
+    if (this.props.currentStatus === null) {
       return null;
     }
-    if (this.props.currentStatus.isSignedIn === false) {
+    if (this.props.currentStatus === false) {
       return (
         <button
           className="ui green google button"
@@ -43,7 +52,10 @@ class GoogleAuth extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { current: state.current, currentStatus: state.currentStatus };
+  return {
+    current: state.current,
+    currentStatus: state.currentStatus.isSignedIn,
+  };
 };
 
 export default connect(mapStateToProps, { signIn, signOut, fetchStatus })(

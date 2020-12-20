@@ -1,7 +1,9 @@
 import { SIGN_IN, SIGN_OUT } from "./type";
-export const signIn = () => {
+export const signIn = (uid) => {
+  console.log("inside action creator", uid);
   return {
     type: SIGN_IN,
+    payload: uid,
   };
 };
 
@@ -11,17 +13,19 @@ export const signOut = () => {
   };
 };
 
-export const fetchStatus = () => async (dispatch, getState) => {
+export const fetchStatus = (cb) => async (dispatch, getState) => {
   //wait and get auth object.
   //it'll get sent to the store for our app to use.
   await dispatch(fetchAuth());
   const auth = getState().current;
 
   //Get the initial status of the auth object.
+  cb(auth.isSignedIn.get());
   dispatch({ type: "FETCH_STATUS", payload: auth.isSignedIn.get() });
 
   //add a listener that will update the state; if the isSignedIn property changes.
   auth.isSignedIn.listen(() => {
+    cb(auth.isSignedIn.get());
     dispatch({ type: "FETCH_STATUS", payload: auth.isSignedIn.get() });
   });
 };
@@ -32,7 +36,7 @@ export const fetchAuth = () => async (dispatch) => {
       window.gapi.load("client:auth2", resolve);
     });
     await window.gapi.client.init({
-      clientId: "",
+      clientId: "someurl",
       scope: "email",
     });
   } catch (err) {
