@@ -8,24 +8,26 @@ class GoogleAuth extends Component {
   }
 
   onAuthChange = (isSignedIn) => {
-    console.log(this.props.current.currentUser.get().getId());
+    console.log(isSignedIn);
+    console.log(this.props.current);
     if (isSignedIn) {
-      this.props.signIn(this.props.current.currentUser.get().getId());
+      this.props.signIn(this.props.current.user.currentUser.get().getId());
     } else {
       this.props.signOut();
     }
   };
 
   renderAuthButton = () => {
-    if (this.props.currentStatus === null) {
+    if (this.props.current.isSignedIn === null) {
       return null;
     }
-    if (this.props.currentStatus === false) {
+    if (this.props.current.isSignedIn === false) {
       return (
         <button
           className="ui green google button"
           onClick={() => {
-            this.props.current.signIn();
+            console.log(this.props.current);
+            this.props.current.user.signIn();
           }}
         >
           <i className="google icon" />
@@ -37,7 +39,9 @@ class GoogleAuth extends Component {
       <button
         className="ui red google button"
         onClick={() => {
-          this.props.current.signOut();
+          console.log(this.props.current);
+
+          this.props.current.user.signOut();
         }}
       >
         <i className="google icon" />
@@ -52,9 +56,12 @@ class GoogleAuth extends Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state.currentStatus, state.current);
   return {
-    current: state.current,
-    currentStatus: state.currentStatus.isSignedIn,
+    current: {
+      isSignedIn: state.currentStatus.isSignedIn,
+      user: state.current,
+    },
   };
 };
 
