@@ -20,7 +20,6 @@ export const fetchStatus = (cb) => async (dispatch, getState) => {
   const auth = getState().current;
 
   //Get the initial status of the auth object.
-  console.log("attempting to get the initial state");
   cb(auth.isSignedIn.get());
   dispatch({ type: "FETCH_STATUS", payload: auth.isSignedIn.get() });
 
@@ -37,7 +36,7 @@ export const fetchAuth = () => async (dispatch) => {
       window.gapi.load("client:auth2", resolve);
     });
     await window.gapi.client.init({
-      clientId: "somekey",
+      clientId: "someurl",
       scope: "email",
     });
   } catch (err) {
