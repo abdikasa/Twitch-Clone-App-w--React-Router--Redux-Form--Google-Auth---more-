@@ -1,6 +1,8 @@
+import streamAPI from "../apis/streams";
 import { SIGN_IN, SIGN_OUT } from "./type";
+
 export const signIn = (uid) => {
-  console.log("inside action creator", uid);
+  console.log("We're signing in.");
   return {
     type: SIGN_IN,
     payload: uid,
@@ -8,6 +10,7 @@ export const signIn = (uid) => {
 };
 
 export const signOut = () => {
+  console.log("We're signing out.");
   return {
     type: SIGN_OUT,
   };

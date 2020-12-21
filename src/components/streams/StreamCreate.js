@@ -53,7 +53,7 @@ class StreamCreate extends React.Component {
 const validate = (formValues) => {
   const errors = {};
   if (!formValues.title) {
-    //run if the user did not enter a ttitle t their stream
+    //run if the user did not enter a title to their stream
     errors.title = "You must enter a title!";
   }
   if (!formValues.desc) {
