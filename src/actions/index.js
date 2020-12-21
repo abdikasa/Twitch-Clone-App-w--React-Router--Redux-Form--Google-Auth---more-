@@ -5,6 +5,10 @@ import {
   FETCH_AUTH,
   FETCH_STATUS,
   CREATE_STREAM,
+  FETCH_STREAM,
+  FETCH_STREAMS,
+  DELETE_STREAM,
+  EDIT_STREAM,
 } from "./type";
 
 export const signIn = (uid) => {
@@ -45,7 +49,7 @@ export const fetchAuth = () => async (dispatch) => {
       window.gapi.load("client:auth2", resolve);
     });
     await window.gapi.client.init({
-      clientId: "",
+      clientId: "someurl",
       scope: "email",
     });
   } catch (err) {
@@ -61,4 +65,22 @@ export const createStream = (formValues) => async (dispatch) => {
   const stream = await streamAPI.post("/streams", formValues);
   //sent the new stream to our application level state inside our redux store.
   dispatch({ type: CREATE_STREAM, payload: stream.data });
+};
+
+export const fetchStream = (id) => async (dispatch) => {
+  const stream = await streamAPI.get(`/streams/${id}`);
+  dispatch({ type: FETCH_STREAM, payload: stream.data });
+};
+export const fetchStreams = () => async (dispatch) => {
+  const streams = await streamAPI.get("/streams");
+  dispatch({ type: FETCH_STREAMS, payload: streams.data });
+};
+export const editStream = (formValues, id) => async (dispatch) => {
+  const stream = await streamAPI.put(`/streams/${id}`, formValues);
+  dispatch({ type: EDIT_STREAM, payload: stream.data });
+};
+
+export const deleteStream = (id) => async (dispatch) => {
+  await streamAPI.delete(`/streams/${id}`);
+  dispatch({ type: DELETE_STREAM, payload: id });
 };
