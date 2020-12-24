@@ -80,8 +80,9 @@ export const fetchStreams = () => async (dispatch) => {
   dispatch({ type: FETCH_STREAMS, payload: streams.data });
 };
 export const editStream = (formValues, id) => async (dispatch) => {
-  const stream = await streamAPI.put(`/streams/${id}`, formValues);
+  const stream = await streamAPI.patch(`/streams/${id}`, formValues);
   dispatch({ type: EDIT_STREAM, payload: stream.data });
+  history.push("/");
 };
 
 export const deleteStream = (id) => async (dispatch) => {
