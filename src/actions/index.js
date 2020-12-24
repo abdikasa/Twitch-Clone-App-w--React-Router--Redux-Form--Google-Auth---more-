@@ -60,9 +60,10 @@ export const fetchAuth = () => async (dispatch) => {
   dispatch({ type: FETCH_AUTH, payload: auth });
 };
 
-export const createStream = (formValues) => async (dispatch) => {
+export const createStream = (formValues) => async (dispatch, getState) => {
   //sent the new stream to our local server
-  const stream = await streamAPI.post("/streams", formValues);
+  const uid = getState().uid;
+  const stream = await streamAPI.post("/streams", { ...formValues, uid });
   //sent the new stream to our application level state inside our redux store.
   dispatch({ type: CREATE_STREAM, payload: stream.data });
 };

@@ -6,8 +6,16 @@ import {
   CREATE_STREAM,
 } from "../actions/type";
 
-export default (state = {}, action) => {
+const INITIAL = {};
+
+export default (state = INITIAL, action) => {
   switch (action.type) {
+    case FETCH_STREAMS:
+      const nested = {};
+      [...action.payload].forEach((stream) => {
+        nested[stream.id] = stream;
+      });
+      return nested;
     case FETCH_STREAM:
       return { ...state, [action.payload.id]: action.payload };
     case CREATE_STREAM:
@@ -17,12 +25,6 @@ export default (state = {}, action) => {
     case DELETE_STREAM:
       delete state[action.payload];
       return { ...state };
-    case FETCH_STREAMS:
-      const nested = {};
-      [...state, action.payload].forEach((stream) => {
-        nested[stream.id] = stream;
-      });
-      return nested;
     default:
       return state;
   }
