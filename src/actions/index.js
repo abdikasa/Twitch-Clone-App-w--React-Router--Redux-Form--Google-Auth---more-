@@ -10,6 +10,7 @@ import {
   DELETE_STREAM,
   EDIT_STREAM,
 } from "./type";
+import history from "../history";
 
 export const signIn = (uid) => {
   console.log("We're signing in.");
@@ -66,6 +67,8 @@ export const createStream = (formValues) => async (dispatch, getState) => {
   const stream = await streamAPI.post("/streams", { ...formValues, uid });
   //sent the new stream to our application level state inside our redux store.
   dispatch({ type: CREATE_STREAM, payload: stream.data });
+  //navigate user to the streams list page after response is successful
+  history.push("/");
 };
 
 export const fetchStream = (id) => async (dispatch) => {
